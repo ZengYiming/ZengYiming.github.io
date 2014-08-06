@@ -17,13 +17,20 @@
 	    	window.alert("Geolocation null!");
 	    }
       function initialize(pos) {
+      	var latlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
         var mapOptions = {
-          center: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+          center: latlng,
           zoom: 14,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
+        var marker = new google.maps.Marker({
+        	map: map,
+        	position: latlng,
+        	title: "Your position."
+        });
+        marker.setMap(map);
       }
     </script>
   </head>
