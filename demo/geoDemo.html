@@ -8,7 +8,7 @@
       #map_canvas { height: 100%, margin: 0 auto;}
     </style>
     <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDIaCtoQ8E1c55DCtBPZDzoZk4QIsxt-jg&sensor=true&lan">
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDIaCtoQ8E1c55DCtBPZDzoZk4QIsxt-jg&sensor=true">
     </script>
     <script type="text/javascript">
 		if (navigator.geolocation) {
@@ -19,7 +19,7 @@
       function initialize(pos) {
         var mapOptions = {
           center: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-          zoom: 8,
+          zoom: 3,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
