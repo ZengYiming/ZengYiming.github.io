@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0; text-align: center; }
+      body::before {
+    	content: " ";
+    	display: inline-block;
+    	height: 100%;
+    	visibility: hidden;
+    	vertical-align: middle;
+      }
+      #todo_canvas {
+      	display: inline-block;
+      	height: 70%;
+      	width: 50%;
+      	vertical-align: middle;
+      }
+      .left {
+        float: left;
+    }
+
+    .right {
+        float: right;
+    }
+    ul {
+        border: 2px solid #2bb6aa;
+        padding: 10px 10px;
+        list-style-type: none;
+    }
+    li {
+        width: 100%;
+        height: 20px;
+        margin: 5px 0;
+    }
+    .input-box {
+        width: 88%;
+    }
+    .add-button, .delete-button {
+        width: 10%;
+    } 
+    .completed-check {
+    }
+    .text-box {
+        width: 78%;
+    }
+    </style>
+
+    <script type="text/javascript"
+      src="http://yui.yahooapis.com/3.17.2/build/yui/yui-min.js">
+    </script>
+  </head>
+  <body>
+      <div id="todo_canvas">
+          <ul>
+              <li class="list-head">
+                <input type="text" class="input-box left" placeholder="Todo Text.">
+                <input type="button" class="right add-button" value="ADD">
+              </li>
+          </ul>
+      </div>
+        <script type="text/javascript">
+            YUI().use(['node', 'event'], function (Y) {
+            var todoCanvas = Y.one("#todo_canvas");
+            var todoUl = todoCanvas.one('ul');
+            window.onload = function() {
+                todoInit(); 
+            }
+            
+            function todoInit() {
+                var todos = window.localStorage;
+                if(!todos) {
+                    window.localStorage.todos = "{}";
+                    return;
+                }
+                for(var key in todos) {
+                    addTodo(JSON.parse(todos[key]), key);
+                }
+            }
+
+            function addTodo(td, key) {
+                var liStr;
+                var checked = td.completed ? "checked" : "";
+                liStr = '<li class="items">' +
+                    '<label class="left">Done<input type="checkbox" data-id="' + key + '" class="left completed-check" ' + checked + '></label>' + 
+                        '<div class="text-box left">' + td.text + '</div>' + 
+                        '<input type="button" data-id="' + key + '" class="right delete-button" value="DELETE">' +
+                    '</li>';
+                todoUl.appendChild(liStr);
+            } 
+
+            todoCanvas.delegate('click', function() {
+                this.ancestor('li').hide(200);
+                var key = this.getData('id');
+                window.localStorage.removeItem(key); 
+            }, ".delete-button");
+            
+            Y.one('.add-button').on('click', function() {
+                var key = Date.now();
+                var inputBox = Y.one('.input-box');
+                var text = inputBox.get("value");
+                if(!text) return;
+                var td = {
+                    text: text,
+                    completed: false
+                    };
+                window.localStorage.setItem(key, JSON.stringify(td)); 
+                addTodo(td, key);
+                inputBox.set("value", "");
+            })
+
+            todoCanvas.delegate('click', function() {
+                var checked = this.get("checked");
+                var key = this.getData('id');
+
+                var td = JSON.parse(window.localStorage.getItem(key)); 
+                td.completed = checked;
+                window.localStorage.setItem(key, JSON.stringify(td));
+            }, ".completed-check")
+            });
+        </script>
+  </body>
+</html>
