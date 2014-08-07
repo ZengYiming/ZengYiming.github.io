@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <style type="text/css">
+            #myCanvas {
+                position: absolute;
+                top: 300px;
+                left: 600px;
+            }
+        </style> 
+    </head>
+    <body>
+        <canvas id="myCanvas" width="200" height="200"></canvas>  
+
+        <script type="text/javascript">
+            var canv = document.getElementById("myCanvas");
+            var ctx = canv.getContext("2d");
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(100, 100, 90, 0, Math.PI*2, true);
+            ctx.closePath();
+            ctx.fillStyle = "#22c5a8";
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.globalCompositeOperation = "source-atop";
+            ctx.beginPath();
+            ctx.arc(100, 100, 90.5, 0, Math.PI*2, true);
+            ctx.arc(100, 100, 95, 0, Math.PI*2, false);
+            ctx.closePath();
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 1; 
+            ctx.shadowBlur = 6; 
+            ctx.shadowColor = "#0c5f4e"; 
+            ctx.fillStyle = "white";
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.font = "Bold 80px Helvetica"; 
+            ctx.textAlign = "center";
+            ctx.fillStyle = "white"; 
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 1; 
+            ctx.shadowBlur = 2; 
+            ctx.shadowColor = "#0c5f4e"; 
+            ctx.fillText("美团", 100, 130); 
+            ctx.restore();
+
+            ctx.save();
+            ctx.globalCompositeOperation = "destination-over"; 
+            var lgd = ctx.createLinearGradient(0, 0, 0, 200);
+            lgd.addColorStop(0, '#fdfdfd');
+            lgd.addColorStop(1, '#ededed');
+            ctx.fillStyle = lgd;
+            ctx.fillRect(0, 0, 200, 200);
+        </script>
+    </body>
+</html>
